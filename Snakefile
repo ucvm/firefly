@@ -39,6 +39,9 @@ raw_r2 = [glob.glob(x) for x in glob_pat_r2]
 rule all:
     input: "results/taxonomy_out.rda", "multiqc_data/multiqc_fastqc.txt", "results/otus.tre"
 
+rule qc:
+    input: "multiqc_data/multiqc_fastqc.txt"
+
 rule clip_primers:
     input: r1 = lambda wc: glob.glob("{dir}/{sample}_*R1*.fastq*".format(dir=config["read_directory"], sample=wc.sample)),
            r2 = lambda wc: glob.glob("{dir}/{sample}_*R2*.fastq*".format(dir=config["read_directory"], sample=wc.sample))

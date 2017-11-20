@@ -19,14 +19,16 @@ message("Removing chimeras")
 seqtab = removeBimeraDenovo(seqtab, method = "consensus", multithread = n_threads, verbose = TRUE)
 
 message("Assigning taxonomy")
-rdp_tax = assignTaxonomy(seqtab, "training/rdp_train_set_16.fa.gz", multithread = n_threads, verbose = TRUE)
-silva_tax = assignTaxonomy(seqtab, "training/silva_nr_v128_train_set.fa.gz", multithread = n_threads, verbose = TRUE)
+rdp_tax = assignTaxonomy(seqtab, "training/rdp_train_set_16.fa.gz", multithread = n_threads, 
+						 verbose = TRUE, tryRC = TRUE)
+silva_tax = assignTaxonomy(seqtab, "training/silva_nr_v128_train_set.fa.gz", multithread = n_threads, 
+						   verbose = TRUE, tryRC = TRUE)
 
 message("Assigning species")
 rdp_species = addSpecies(rdp_tax, "training/rdp_species_assignment_16.fa.gz", 
-												 verbose = TRUE, allowMultiple = TRUE)
+						 verbose = TRUE, allowMultiple = TRUE)
 silva_species = addSpecies(silva_tax, "training/silva_species_assignment_v128.fa.gz", 
-													 verbose = TRUE, allowMultiple = TRUE)
+						   verbose = TRUE, allowMultiple = TRUE)
 
 # --- Sequences and OTU ids
 seqs = Biostrings::DNAStringSet(colnames(seqtab))
