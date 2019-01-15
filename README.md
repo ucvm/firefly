@@ -25,4 +25,6 @@ Custom parameters stored in `config.yaml`
 
 
 
+## Note to potential users
 
+This code is made available primarily for reproducability and is not intended as a general use tool.  That being said if you want to borrow ideas on how to use Snakemake to run R scripts then by all means, borrow away!
