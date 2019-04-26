@@ -28,10 +28,15 @@ raw_r2 = [glob.glob(x) for x in glob_pat_r2]
 # **** Rules ****
 
 rule all:
-    input: "results/taxonomy_out.rda", "multiqc_data/multiqc_fastqc.txt", "results/otus.tre"
+    input: 
+        "results/taxonomy_out.rda", 
+        "multiqc_data/multiqc_fastqc.txt", 
+        "results/otus.tre"
 
 rule qc:
-    input: "multiqc_data/multiqc_fastqc.txt"
+    input: 
+        "multiqc_data/multiqc_fastqc.txt",
+        expand("clipped/{sample}_R1.cut", sample = samples)
 
 rule clip_primers:
     input: 
