@@ -1,6 +1,7 @@
-# *******************************
-# * Vet med microbiome pipeline *
-# *******************************
+# ***********
+# * FIREFLY *
+# ***********
+
 
 # **** Imports ****
 
@@ -73,7 +74,7 @@ rule filter_and_trim:
     conda:
         "envs/dada2.yaml"
     script: 
-        "filter_and_trim.R"
+        "scripts/filter_and_trim.R"
 
 rule learn_errors:
     input: 
@@ -86,7 +87,7 @@ rule learn_errors:
     conda:
         "envs/dada2.yaml"
     script: 
-        "learn_errors.R"
+        "scripts/learn_errors.R"
 
 rule infer_seqs:
     input: 
@@ -98,7 +99,7 @@ rule infer_seqs:
     conda:
         "envs/dada2.yaml"
     script: 
-        "infer_seqs.R"
+        "scripts/infer_seqs.R"
 
 rule taxonomy:
     input: 
@@ -113,7 +114,7 @@ rule taxonomy:
     conda:
         "envs/dada2.yaml"
     script: 
-        "assign_taxonomy.R"
+        "scripts/assign_taxonomy.R"
 
 rule ssu_align:
     input:

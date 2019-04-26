@@ -1,49 +1,35 @@
 ---
 
 # Primers - uncomment the correct set
-# ====================================
-# These are some common ones used at our institution.  You may need to provide your own
-# primer sequences
 
 # Illumina V3-V4 protocol primers
-fwd_primer: "TCGTCGGCAGCGTCAGATGTGTATAAGAGACAGCCTACGGGNGGCWGCAG"
-rev_primer: "GTCTCGTGGGCTCGGAGATGTGTATAAGAGACAGGACTACHVGGGTATCTAATCC"
-fwd_primer_rc: "CTGCWGCCNCCCGTAGGCTGTCTCTTATACACATCTGACGCTGCCGACGA"
-rev_primer_rc: "GGATTAGATACCCBDGTAGTCCTGTCTCTTATACACATCTCCGAGCCCACGAGAC"
+fwd_primer: "CCTACGGGNGGCWGCAG"
+rev_primer: "GACTACHVGGGTATCTAATCC"
+fwd_primer_rc: "CTGCWGCCNCCCGTAGG" 
+rev_primer_rc: "GGATTAGATACCCBDGTAGTC"
 
-# Surette V3-V4 protocol
-# fwd_primer: "NNNNGGACTACHVGGGTWTCTAAT"
-# rev_primer: "CCTACGGGAGGCAGCAG"
-# fwd_primer_rc: "ATTAGAWACCCBDGTAGTCCNNNN"
-# rev_primer_rc: "CTGCTGCCTCCCGTAGG"
-
-# Genome Quebec V4 primers
+# V4 primers: 515F-806R
 # fwd_primer: "GTGCCAGCMGCCGCGGTAA"
 # rev_primer: "GGACTACHVGGGTWTCTAAT"
 # fwd_primer_rc: "TTACCGCGGCMGCTGGCAC"
 # rev_primer_rc: "ATTAGAWACCCVHGTAGTCC"
 
-run_name: "test" 
-    
-# max value for expected error for read filtering. Increase to reduce stringency.
 
+run_name: "test" 
+read_directory: "data"
+    
+# Pre-trim at this qual cutoff with cutadapt
+q_trim: 20
+
+# max value for expected error for read filtering. Increase to reduce stringency.
 max_expected_error: 1.0 
 
 # Truncate all reads at this length (fwd, rev)
 truncLen: 0
 trimLeft: 0
 
-# Pre-trim at this qual cutoff with cutadapt
-q_trim: 20
-
-# number of reads for learning errors
-nreads: 2000000
-
 # number of threads 
-num_threads: 28 
-
-# Directory where the raw reads are stored
-read_directory: "../data"
+num_threads: 2 
 
 samples: []
 
