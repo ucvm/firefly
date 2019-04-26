@@ -34,14 +34,16 @@ rule qc:
     input: "multiqc_data/multiqc_fastqc.txt"
 
 rule clip_primers:
-    input: i
-    r1 = lambda wc: glob.glob("{dir}/{sample}_*R1*.fastq*".format(dir=config["read_directory"], sample=wc.sample)),
-    r2 = lambda wc: glob.glob("{dir}/{sample}_*R2*.fastq*".format(dir=config["read_directory"], sample=wc.sample))
+    input: 
+        r1 = lambda wc: glob.glob("{dir}/{sample}_*R1*.fastq*".format(dir=config["read_directory"], sample=wc.sample)),
+        r2 = lambda wc: glob.glob("{dir}/{sample}_*R2*.fastq*".format(dir=config["read_directory"], sample=wc.sample))
     output: 
         r1 = "clipped/{sample}_R1.cut", 
         r2 = "clipped/{sample}_R2.cut"
     log: 
         "logs/{sample}.log"
+    conda:
+        "envs/quality.yaml"
     shell: 
         """ 
 	    cutadapt -g {config[fwd_primer]} -G {config[rev_primer]} \
@@ -51,15 +53,26 @@ rule clip_primers:
         """
 
 rule fastqc:
-    input: raw_r1 + raw_r2 
-    output: touch("fastqc.done")
-    threads: config["num_threads"] 
-    shell: "mkdir -p fastqc; fastqc -t {threads} -o fastqc {input}"
+    input: 
+        raw_r1 + raw_r2 
+    output: 
+        touch("fastqc.done")
+    threads: 
+        config["num_threads"] 
+    conda:
+        "envs/quality.yaml"
+    shell: 
+        "mkdir -p fastqc; fastqc -t {threads} -o fastqc {input}"
 
 rule multiqc:
-    input: "fastqc.done"
-    output: "multiqc_data/multiqc_fastqc.txt"
-    shell: "multiqc -f fastqc"
+    input: 
+        "fastqc.done"
+    output: 
+        "multiqc_data/multiqc_fastqc.txt"
+    conda:
+        "envs/quality.yaml"
+    shell: 
+        "multiqc -f fastqc"
 
 rule filter_and_trim:
     input: 
