@@ -126,7 +126,7 @@ rule taxonomy:
         taxonomy = "results/taxonomy_out.rda", 
         otus = "results/otus.fasta"
     params: 
-        train_dir = "training"
+        train_dir = config["train_dir"]
     threads: 
         config["num_threads"]
     conda:

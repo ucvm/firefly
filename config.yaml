@@ -28,6 +28,9 @@ max_expected_error: 1.0
 truncLen: 0
 trimLeft: 0
 
+# directory with rdp and silva training files
+train_dir: ""
+
 # number of threads 
 num_threads: 2 
 
