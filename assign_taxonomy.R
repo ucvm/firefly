@@ -19,28 +19,38 @@ message("Removing chimeras")
 seqtab = removeBimeraDenovo(seqtab, method = "consensus", multithread = n_threads, verbose = TRUE)
 
 message("Assigning taxonomy")
-rdp_tax = assignTaxonomy(seqtab, "training/rdp_train_set_16.fa.gz", multithread = n_threads, 
-						 verbose = TRUE, tryRC = TRUE)
-silva_tax = assignTaxonomy(seqtab, "training/silva_nr_v128_train_set.fa.gz", multithread = n_threads, 
-						   verbose = TRUE, tryRC = TRUE)
+
+train_dir = snakemake@params$train_dir
+
+train = list(
+ rdp = file.path(train_dir, "rdp_train_set_16.fa.gz"),
+ silva = file.path(train_dir, "silva_nr_v132_train_set.fa.gz")
+ )
+
+tax = map(train, ~assignTaxonomy(seqtab, .x, multithread = n_threads, verbose = TRUE, tryRC = TRUE)
 
 message("Assigning species")
-rdp_species = addSpecies(rdp_tax, "training/rdp_species_assignment_16.fa.gz", 
-						 verbose = TRUE, allowMultiple = TRUE)
-silva_species = addSpecies(silva_tax, "training/silva_species_assignment_v128.fa.gz", 
-						   verbose = TRUE, allowMultiple = TRUE)
 
+spec_train = list(
+    rdp = file.path(train_dir, "rdp_species_assignment_16.fa.gz"),
+    silva =file.path(train_dir, "silva_species_assignment_v132.fa.gz")
+) 
+
+species = map2(tax, spec_train, ~addSpecies(.x, .y, verbose = TRUE, allowMultiple = TRUE)
+
+               
 # --- Sequences and OTU ids
+            
 seqs = Biostrings::DNAStringSet(colnames(seqtab))
 otus = paste0("OTU_", 1:ncol(seqtab))
 names(seqs) = otus
 colnames(seqtab) = otus
 
-rownames(rdp_species) = otus
-rownames(rdp_tax) = otus
-rownames(silva_species) = otus
-rownames(silva_tax) = otus
+rownames(tax$rdp) = otus
+rownames(species$rdp) = otus
+rownames(tax$silva) = otus
+rownames(species$silva) = otus
 
 # --- Write it out
 Biostrings::writeXStringSet(seqs, snakemake@output$otus)
-save(seqtab, rdp_tax, rdp_species, silva_species, silva_tax, file = snakemake@output$taxonomy)
+save(seqtab, tax, species, file = snakemake@output$taxonomy)

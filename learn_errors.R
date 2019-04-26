@@ -22,8 +22,8 @@ if (!identical(r1_names, r2_names)) stop("R1 and R2 don't match")
 
 # --- Learn errors
 
-err_r1 = learnErrors(r1_files, multithread = n_threads, nreads = snakemake@config$nreads)
-err_r2 = learnErrors(r2_files, multithread = n_threads, nreads = snakemake@config$nreads) 
+err_r1 = learnErrors(r1_files, multithread = n_threads)
+err_r2 = learnErrors(r2_files, multithread = n_threads) 
 
 # --- Save output
 save(r1_files, r1_names, err_r1, 
